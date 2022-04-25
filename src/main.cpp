@@ -2,8 +2,13 @@
 #include "Part2.hpp"
 #include "globals.h"
 
-#include <GL/gl.h>
-#include <GL/glu.h>
+#ifdef XCODE_SET_IN_GLOBALS
+    #include <OpenGL/gl.h>
+    #include <OpenGL/glu.h>
+#else
+    #include <GL/gl.h>
+    #include <GL/glu.h>
+#endif
 #ifdef __APPLE__
     #include <GLUT/glut.h>
 #else

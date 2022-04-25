@@ -1,6 +1,9 @@
 #ifndef GRAPHICSGROUPPROJECT_GLOBALS_H
 #define GRAPHICSGROUPPROJECT_GLOBALS_H
 
+// Set this if using XCode
+//#define XCODE_SET_IN_GLOBALS
+
 #include <cmath>
 #include <random>
 
