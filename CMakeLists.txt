@@ -20,7 +20,8 @@ else()
 endif()
 
 # Project vars
-set(SOURCE_FILES src/main.cpp src/Part1.cpp src/Part1.hpp src/Part2.cpp src/Part2.hpp src/Part3.cpp src/Part3.hpp)
+add_subdirectory(src/vector)
+set(SOURCE_FILES src/main.cpp src/Part1.cpp src/Part1.hpp src/Part2.cpp src/Part2.hpp src/globals.cpp)
 
 # OpenGL vars
 find_package(OpenGL REQUIRED)
@@ -28,5 +29,5 @@ find_package(GLUT REQUIRED)
 
 # Executable creation and linking
 add_executable(GraphicsGroupProject ${SOURCE_FILES})
-target_link_libraries(GraphicsGroupProject PRIVATE OpenGL::GL OpenGL::GLU GLUT::GLUT)
+target_link_libraries(GraphicsGroupProject PRIVATE OpenGL::GL OpenGL::GLU GLUT::GLUT vector)
 target_compile_features(GraphicsGroupProject PRIVATE cxx_std_20)

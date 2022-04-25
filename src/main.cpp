@@ -1,19 +1,36 @@
+#include "Part1.hpp"
+#include "Part2.hpp"
+#include "globals.h"
+
 #include <GL/gl.h>
 #include <GL/glu.h>
-
 #ifdef __APPLE__
-#include <GLUT/glut.h>
+    #include <GLUT/glut.h>
 #else
-#include <GL/glut.h>
+    #include <GL/glut.h>
 #endif // __APPLE__
 
-int main()
+int p1_window_width = 640;
+int p1_window_height = 480;
+
+int p2_window_width = 640;
+int p2_window_height = 640;
+
+int main(int argc, char **argv)
 {
+    // Initialize GLUT
+    glutInit(&argc, argv);
+    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
+    glutInitWindowPosition(100, 100);
+    glutInitWindowSize(p1_window_width, p1_window_height);
+
     // Start part 1 window
 
     // Start part 2 window
+    glutInitWindowPosition(700, 100);
+    glutInitWindowSize(p2_window_width, p2_window_height);
+    Part2::runPart2();
 
-    // Start part 3 window
-
+    glutMainLoop();
     return 0;
 }

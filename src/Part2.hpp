@@ -1,11 +1,10 @@
 #ifndef GRAPHICSGROUPPROJECT_PART2_HPP
 #define GRAPHICSGROUPPROJECT_PART2_HPP
 
-
-class Part2
+namespace Part2
 {
-
-};
-
+    // Generate window and start behavior
+    void runPart2();
+}
 
 #endif //GRAPHICSGROUPPROJECT_PART2_HPP
