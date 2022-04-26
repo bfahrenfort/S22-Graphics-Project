@@ -1,10 +1,13 @@
-#include <GL/gl.h>
-#include <GL/glu.h>
+#define GL_SILENCE_DEPRECATION
+#include <OpenGL/gl.h>
+#include <OpenGL/glu.h>
+
 #ifdef __APPLE__
-    #include <GLUT/glut.h>
+#include <GLUT/glut.h>
 #else
-    #include <GL/glut.h>
+#include <GL/glut.h>
 #endif // __APPLE__
+#include <numbers>
 
 #include "Part2.hpp"
 #include "globals.h"

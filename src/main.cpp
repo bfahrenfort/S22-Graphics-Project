@@ -2,9 +2,12 @@
 #include "Part2.hpp"
 #include "globals.h"
 
-#include <GL/gl.h>
-#include <GL/glu.h>
+
+#include <OpenGL/gl.h>
+#include <OpenGL/glu.h>
+
 #ifdef __APPLE__
+#define GL_SILENCE_DEPRECATION
     #include <GLUT/glut.h>
 #else
     #include <GL/glut.h>
