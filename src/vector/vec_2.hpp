@@ -20,6 +20,8 @@ struct Vec2
     Vec2() = default;
     Vec2(T horizontal, T vertical);
     std::string to_string_rep();
+
+    bool operator==(Vec2<T> &right);
 };
 
 // Unfortunately, template C++ requires all code visible to the calling unit
@@ -34,6 +36,15 @@ std::string Vec2<T>::to_string_rep()
     std::string rep = std::string();
     rep = "(" + std::to_string(x) + ", " + std::to_string(y) + ")";
     return rep;
+}
+
+VEC2G
+bool Vec2<T>::operator==(Vec2<T> &right)
+{
+    if (x == right.x && y == right.y)
+        return true;
+
+    return false;
 }
 
 VEC2G

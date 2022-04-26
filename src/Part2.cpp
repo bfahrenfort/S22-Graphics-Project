@@ -23,12 +23,13 @@ GLfloat red = 0, green = 0, blue = 0;
 int p2_window_id = -1;
 
 // Animation calculations
-const int radius = 60;
+const int poly_radius = 60;
 static GLfloat rotTheta = 0.0;
 static GLfloat rotMultiplier = 1.0;
-Vec2<GLint> left_pos((-p2_window_width/2) + radius, (-p2_window_height/2) + radius);
-Vec2<GLint> right_pos((p2_window_width/2) - radius, (p2_window_height/2) + radius);
-Vec2<GLint> cur_pos;
+static Vec2<GLint> left_pos;
+static Vec2<GLint> right_pos;
+static Vec2<GLint> cur_pos;
+static bool movingLeft = false;
 
 // Ignore this
 void rave(void)
@@ -55,6 +56,8 @@ void regular_polygon_points(double radius, int num_verts)
 
 static void init (void)
 {
+    left_pos = Vec2<GLint>((-p2_window_width/2) + poly_radius, (-p2_window_height/2) + poly_radius);
+    right_pos = Vec2<GLint>((p2_window_width/2) - poly_radius, (p2_window_height/2) + poly_radius);
     cur_pos = Vec2<GLint>(left_pos);
     red = randf();
     green = randf();
@@ -79,10 +82,8 @@ static void init (void)
 center position is originally at the screen-coordinate position (150, 150) with a
 radius (distance from the polygon center to any vertex) of 100 pixels.*/
 
-    glPushMatrix();
-    glTranslated(left_pos.x, left_pos.y, 0);
     glBegin (GL_POLYGON);
-    regular_polygon_points(radius, 16);
+    regular_polygon_points(poly_radius, 16);
     glEnd ( );
     glEndList ( );
 }
@@ -94,11 +95,14 @@ and invoke the glutSwapBuffers routine */
 
 void displayHex (void)
 {
+    auto temp_pos(cur_pos);
     glClear (GL_COLOR_BUFFER_BIT);
     glPushMatrix ( );  //push and pop the current matrix stack.
     rave();
     glColor3f (red, green, blue);
-    glRotatef (rotTheta, 0.0, 0.0, 1.0);
+    glTranslated(temp_pos.x, temp_pos.y, 0);
+    glRotatef (rotTheta, 0, 0, 1.0);
+    glTranslated(0, 0, 0);
     glCallList (listMove); // execute a display list
     glPopMatrix ( ); // pops the current matrix stack, replacing the current matrix with the one below it on the stack.
     glutSwapBuffers ( );
@@ -107,9 +111,19 @@ void displayHex (void)
 
 void move ()
 {
-    rotTheta += 3.0 * rotMultiplier;
+    // Move the ball
+    cur_pos.x = cur_pos.x + 3.0 * rotMultiplier * (movingLeft ? -1 : 1);
+
+    if (cur_pos.x > right_pos.x)
+        movingLeft = true;
+    else if (cur_pos.x < left_pos.x)
+        movingLeft = false;
+
+    // Rotate the ball
+    rotTheta += 3.0 * rotMultiplier * (movingLeft ? 1 : -1);
     if (rotTheta > 360.0)
         rotTheta -= 360.0;
+
     glutPostRedisplay ( ); // marks the current window as needing to be redisplayed . The next iteration through glutMainLoop, the window's display callback will be called to redisplay the window's normal plane
 }
 
@@ -160,6 +174,7 @@ void winReshapeFcn (GLint newWidth, GLint newHeight)
 
 void Part2::runPart2()
 {
+    initrand();
     glutCreateWindow("Part 2");
     init ( );
     glutDisplayFunc (displayHex);
