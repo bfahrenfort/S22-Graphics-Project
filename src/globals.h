@@ -4,9 +4,6 @@
 // Set this if using XCode
 //#define XCODE_SET_IN_GLOBALS
 
-#include <cmath>
-#include <random>
-
 extern int p1_window_width;
 extern int p1_window_height;
 
