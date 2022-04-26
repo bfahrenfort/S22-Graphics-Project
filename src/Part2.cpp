@@ -1,6 +1,3 @@
-#include <GL/gl.h>
-#include <GL/glu.h>
-
 #ifdef XCODE_SET_IN_GLOBALS
     #include <OpenGL/gl.h>
     #include <OpenGL/glu.h>
@@ -8,10 +5,11 @@
     #include <GL/gl.h>
     #include <GL/glu.h>
 #endif // XCODE_SET_IN_GLOBALS
+
 #ifdef __APPLE__
-#include <GLUT/glut.h>
+    #include <GLUT/glut.h>
 #else
-#include <GL/glut.h>
+    #include <GL/glut.h>
 #endif // __APPLE__
 
 #include "Part2.hpp"
@@ -62,6 +60,7 @@ void regular_polygon_points(double radius, int num_verts)
 
 static void init (void)
 {
+    // Initialize vectors and colors
     update_positions();
     cur_pos = Vec2<GLint>(left_pos);
     red = randf();
@@ -69,46 +68,32 @@ static void init (void)
     blue = randf();
     glClearColor (1.0, 1.0, 1.0, 0.0);
     glColor3f (red, green, blue);
-/* Set up a display list for a red regular hexagon.
-* Vertices for the hexagon are six equally spaced
-* points around the circumference of a circle.
-*/
-    listMove = glGenLists (1); //Generates a continuous range of empty display lists. Display lists are groups of GL commands that have been stored for subsequent execution.
 
-    glNewList (listMove, GL_COMPILE); //Specifies the display-list name.
+    listMove = glGenLists (1);
+    glNewList (listMove, GL_COMPILE);
 
-    // set the current color
-
-// The origin three-dimensional screen coordinates is placed at the center of the display window
-// so that the z axis passes through this center position
-
-
-/*In procedure init, we use a display list to set up the description of the regular hexagon, whose
-center position is originally at the screen-coordinate position (150, 150) with a
-radius (distance from the polygon center to any vertex) of 100 pixels.*/
-
+    // Draw our circle
     glBegin (GL_POLYGON);
     regular_polygon_points(poly_radius, 16);
     glEnd ( );
     glEndList ( );
 }
 
-
-/*In the display function, displayHex, specify an initial 0◦ rotation about the z axis
-and invoke the glutSwapBuffers routine */
-
-
 void displayHex (void)
 {
     auto temp_pos(cur_pos);
     glClear (GL_COLOR_BUFFER_BIT);
-    glPushMatrix ( );  //push and pop the current matrix stack.
+
+    // Perform appropriate transforms
+    glPushMatrix ( );
     glColor3f (red, green, blue);
     glTranslated(temp_pos.x, temp_pos.y, 0);
     glRotatef (rotTheta, 0, 0, 1.0);
     glTranslated(0, 0, 0);
-    glCallList (listMove); // execute a display list
-    glPopMatrix ( ); // pops the current matrix stack, replacing the current matrix with the one below it on the stack.
+
+    // Draw and commit to screen
+    glCallList (listMove);
+    glPopMatrix ( );
     glutSwapBuffers ( );
     glFlush ( );
 }
@@ -119,26 +104,24 @@ void move ()
     cur_pos.x = cur_pos.x + 3.0 * rotMultiplier * (movingLeft ? -1 : 1);
     cur_pos.y = poly_radius - p2_window_height/2;
 
+    // Swap directions if needed
     bool t_movingLeft = movingLeft;
     if (cur_pos.x > right_pos.x)
         movingLeft = true;
     else if (cur_pos.x < left_pos.x)
         movingLeft = false;
 
+    // Party
     if (t_movingLeft != movingLeft)
         rave();
+
     // Rotate the ball
     rotTheta += 3.0 * rotMultiplier * (movingLeft ? 1 : -1);
     if (rotTheta > 360.0)
         rotTheta -= 360.0;
 
-    glutPostRedisplay ( ); // marks the current window as needing to be redisplayed . The next iteration through glutMainLoop, the window's display callback will be called to redisplay the window's normal plane
+    glutPostRedisplay ( );
 }
-
-/*The calculation of the incremented rotation
-angle is performed in procedure rotateAntiClockwise, which is called by the
-glutIdleFunc routine in procedure mouseFcn */
-
 
 void mouseFcn (GLint button, GLint action, GLint x, GLint y)
 {
@@ -147,7 +130,7 @@ void mouseFcn (GLint button, GLint action, GLint x, GLint y)
             if (action == GLUT_DOWN)
             {
                 rotMultiplier = 1.0;
-                glutIdleFunc(move); // glutIdleFunc sets the global idle callback to be func so a GLUT program can perform background processing tasks or continuous animation when window system events are not being received
+                glutIdleFunc(move);
             }
             break;
         case GLUT_RIGHT_BUTTON: // Stop the rotation.
