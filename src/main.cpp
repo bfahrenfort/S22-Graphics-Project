@@ -2,6 +2,12 @@
 #include "Part2.hpp"
 #include "globals.h"
 
+#ifdef __APPLE__
+#include <GLUT/glut.h>
+#else
+#include <GL/glut.h>
+#endif // __APPLE__
+
 #ifdef XCODE_SET_IN_GLOBALS
     #include <OpenGL/gl.h>
     #include <OpenGL/glu.h>
@@ -9,11 +15,6 @@
     #include <GL/gl.h>
     #include <GL/glu.h>
 #endif
-#ifdef __APPLE__
-    #include <GLUT/glut.h>
-#else
-    #include <GL/glut.h>
-#endif // __APPLE__
 
 int p1_window_width = 640;
 int p1_window_height = 480;
