@@ -31,6 +31,12 @@ static Vec2<GLint> right_pos;
 static Vec2<GLint> cur_pos;
 static bool movingLeft = false;
 
+void update_positions()
+{
+    left_pos = Vec2<GLint>((-p2_window_width/2) + poly_radius, (-p2_window_height/2) + poly_radius);
+    right_pos = Vec2<GLint>((p2_window_width/2) - poly_radius, (p2_window_height/2) + poly_radius);
+}
+
 // Ignore this
 void rave(void)
 {
@@ -56,8 +62,7 @@ void regular_polygon_points(double radius, int num_verts)
 
 static void init (void)
 {
-    left_pos = Vec2<GLint>((-p2_window_width/2) + poly_radius, (-p2_window_height/2) + poly_radius);
-    right_pos = Vec2<GLint>((p2_window_width/2) - poly_radius, (p2_window_height/2) + poly_radius);
+    update_positions();
     cur_pos = Vec2<GLint>(left_pos);
     red = randf();
     green = randf();
@@ -113,6 +118,7 @@ void move ()
 {
     // Move the ball
     cur_pos.x = cur_pos.x + 3.0 * rotMultiplier * (movingLeft ? -1 : 1);
+    cur_pos.y = poly_radius - p2_window_height/2;
 
     if (cur_pos.x > right_pos.x)
         movingLeft = true;
@@ -149,7 +155,6 @@ void mouseFcn (GLint button, GLint action, GLint x, GLint y)
                     exit(0);
                 else
                 {
-                    int p2wid = p2_window_id;
                     p2_window_id = -1;
                     glutDestroyWindow(p2_window_id);
                 }
@@ -163,10 +168,14 @@ void mouseFcn (GLint button, GLint action, GLint x, GLint y)
 
 void winReshapeFcn (GLint newWidth, GLint newHeight)
 {
+    p2_window_width = newWidth;
+    p2_window_height = newHeight;
+    update_positions();
     glViewport (0, 0, (GLsizei) newWidth, (GLsizei) newHeight);
     glMatrixMode (GL_PROJECTION);
     glLoadIdentity ( );
-    gluOrtho2D (-320.0, 320.0, -320.0, 320.0);
+
+    gluOrtho2D (-p2_window_width/2, p2_window_width/2, -p2_window_height/2, p2_window_height/2);
     glMatrixMode (GL_MODELVIEW);
     glLoadIdentity ( );
     glClear (GL_COLOR_BUFFER_BIT);
