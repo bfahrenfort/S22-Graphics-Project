@@ -103,7 +103,6 @@ void displayHex (void)
     auto temp_pos(cur_pos);
     glClear (GL_COLOR_BUFFER_BIT);
     glPushMatrix ( );  //push and pop the current matrix stack.
-    rave();
     glColor3f (red, green, blue);
     glTranslated(temp_pos.x, temp_pos.y, 0);
     glRotatef (rotTheta, 0, 0, 1.0);
@@ -120,11 +119,14 @@ void move ()
     cur_pos.x = cur_pos.x + 3.0 * rotMultiplier * (movingLeft ? -1 : 1);
     cur_pos.y = poly_radius - p2_window_height/2;
 
+    bool t_movingLeft = movingLeft;
     if (cur_pos.x > right_pos.x)
         movingLeft = true;
     else if (cur_pos.x < left_pos.x)
         movingLeft = false;
 
+    if (t_movingLeft != movingLeft)
+        rave();
     // Rotate the ball
     rotTheta += 3.0 * rotMultiplier * (movingLeft ? 1 : -1);
     if (rotTheta > 360.0)
