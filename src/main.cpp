@@ -3,12 +3,13 @@
 #include "globals.h"
 
 #ifdef __APPLE__
-#include <GLUT/glut.h>
+    #include <GLUT/glut.h>
 #else
-#include <GL/glut.h>
+    #include <GL/glut.h>
 #endif // __APPLE__
 
 #ifdef XCODE_SET_IN_GLOBALS
+    #define GL_SILENCE_DEPRECATION
     #include <OpenGL/gl.h>
     #include <OpenGL/glu.h>
 #else

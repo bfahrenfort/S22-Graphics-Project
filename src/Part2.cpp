@@ -1,3 +1,9 @@
+#include <numbers>
+
+#include "Part2.hpp"
+#include "globals.h"
+#include "vector/vec_2.hpp"
+
 #ifdef __APPLE__
 #include <GLUT/glut.h>
 #else
@@ -5,18 +11,13 @@
 #endif // __APPLE__
 
 #ifdef XCODE_SET_IN_GLOBALS
+    #define GL_SILENCE_DEPRECATION
     #include <OpenGL/gl.h>
     #include <OpenGL/glu.h>
 #else
     #include <GL/gl.h>
     #include <GL/glu.h>
 #endif // XCODE_SET_IN_GLOBALS
-
-#include <numbers>
-
-#include "Part2.hpp"
-#include "globals.h"
-#include "vector/vec_2.hpp"
 
 GLuint listMove; // Define name for display list.
 GLfloat red = 0, green = 0, blue = 0;
