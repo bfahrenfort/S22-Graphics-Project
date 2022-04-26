@@ -39,3 +39,15 @@ cmake-build-release/
 # Output stuff
 bin/
 lib/
+
+# Visual Studio
+.vs/
+*.vcxproj
+*.user
+*.dir/
+*.sln
+*.filters
+*.cmake
+CMakeFiles/
+CMakeCache.txt
+x64/
