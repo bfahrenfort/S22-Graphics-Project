@@ -3,3 +3,4 @@ The group project for Computer Graphics.
 
 ## Contributors
 * Brandon Fahrenfort
+* Daghan Cetin
