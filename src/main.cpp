@@ -29,13 +29,14 @@ int main(int argc, char **argv)
     // Initialize GLUT
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
-    glutInitWindowPosition(100, 100);
-    glutInitWindowSize(p1_window_width, p1_window_height);
 
     // Start part 1 window
+    glutInitWindowPosition(100, 100);
+    glutInitWindowSize(p1_window_width, p1_window_height);
+    Part1::runPart1();
 
     // Start part 2 window
-    glutInitWindowPosition(700, 100);
+    glutInitWindowPosition(1000, 100);
     glutInitWindowSize(p2_window_width, p2_window_height);
     Part2::runPart2();
 

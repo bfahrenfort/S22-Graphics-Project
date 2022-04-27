@@ -15,7 +15,7 @@ if($ENV{CLION_IDE})
     set(LIBRARY_OUTPUT_PATH ../lib)
 else()
     set(CMAKE_RUNTIME_OUTPUT_DIRECTORY  bin)
-    set(CMAKE_LIBRARY_OUTPUT_DIRECTORY .lib)
+    set(CMAKE_LIBRARY_OUTPUT_DIRECTORY lib)
     set(LIBRARY_OUTPUT_PATH lib)
 endif()
 

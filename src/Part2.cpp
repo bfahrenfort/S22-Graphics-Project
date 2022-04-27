@@ -172,7 +172,7 @@ void winReshapeFcn (GLint newWidth, GLint newHeight)
 void Part2::runPart2()
 {
     initrand();
-    glutCreateWindow("Part 2");
+    p2_window_id = glutCreateWindow("Part 2");
     init ( );
     glutDisplayFunc (displayHex);
     glutReshapeFunc (winReshapeFcn);
