@@ -32,33 +32,18 @@ static Vec2<GLint> right_pos;
 static Vec2<GLint> cur_pos;
 static bool movingLeft = false;
 
-void update_positions()
+static void update_positions()
 {
     left_pos = Vec2<GLint>((-p2_window_width/2) + poly_radius, (-p2_window_height/2) + poly_radius);
     right_pos = Vec2<GLint>((p2_window_width/2) - poly_radius, (p2_window_height/2) + poly_radius);
 }
 
 // Ignore this
-void rave(void)
+static void rave(void)
 {
     red = randf();
     green = randf();
     blue = randf();
-}
-
-// Create a collection of points equiangular
-using std::numbers::pi;
-void regular_polygon_points(double radius, int num_verts)
-{
-    double angle = 0.0;
-
-    for(int i = 0; i < num_verts; ++i)
-    {
-        // Angle of the next point, rotated so the first point is on top in the shapes that it should be
-        angle = 2 * pi / num_verts * i + pi/(num_verts % 2 == 0 ? num_verts : 2);
-
-        glVertex3d(radius * cos(angle), radius * sin(angle), 0);
-    }
 }
 
 static void init (void)
@@ -82,7 +67,7 @@ static void init (void)
     glEndList ( );
 }
 
-void displayHex (void)
+static void displayHex (void)
 {
     auto temp_pos(cur_pos);
     glClear (GL_COLOR_BUFFER_BIT);
@@ -101,7 +86,7 @@ void displayHex (void)
     glFlush ( );
 }
 
-void move ()
+static void move ()
 {
     // Move the ball
     cur_pos.x = cur_pos.x + 3.0 * rotMultiplier * (movingLeft ? -1 : 1);
@@ -126,7 +111,7 @@ void move ()
     glutPostRedisplay ( );
 }
 
-void mouseFcn (GLint button, GLint action, GLint x, GLint y)
+static void mouseFcn (GLint button, GLint action, GLint x, GLint y)
 {
     switch (button) {
         case GLUT_LEFT_BUTTON: // Start the rotation.
@@ -154,7 +139,7 @@ void mouseFcn (GLint button, GLint action, GLint x, GLint y)
 }
 
 
-void winReshapeFcn (GLint newWidth, GLint newHeight)
+static void winReshapeFcn (GLint newWidth, GLint newHeight)
 {
     p2_window_width = newWidth;
     p2_window_height = newHeight;
