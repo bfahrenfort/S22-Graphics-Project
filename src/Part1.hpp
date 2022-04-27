@@ -2,10 +2,10 @@
 #define GRAPHICSGROUPPROJECT_PART1_HPP
 
 
-class Part1
+namespace Part1
 {
-
-};
+  void runPart1();
+}
 
 
 #endif //GRAPHICSGROUPPROJECT_PART1_HPP

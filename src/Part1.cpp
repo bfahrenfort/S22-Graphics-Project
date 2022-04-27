@@ -4,7 +4,6 @@
 
 #ifdef __APPLE__
     #include <GLUT/glut.h>
-
 #else
     #include <GL/glut.h>
 
@@ -14,11 +13,19 @@
     #define GL_SILENCE_DEPRECATION
     #include <OpenGL/gl.h>
     #include <OpenGL/glu.h>
-
 #else
     #include <GL/gl.h>
     #include <GL/glu.h>
-
 #endif // XCODE_SET_IN_GLOBALS
 
 int p1_window_id = -1;
+
+
+void Part1::runPart1()
+{
+    initrand();
+    glutCreateWindow("Part 1");
+    //glutDisplayFunc (displayHex);
+    //glutReshapeFunc (winReshapeFcn);
+    //glutMouseFunc (mouseFcn);
+}
