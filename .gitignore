@@ -49,6 +49,10 @@ lib/
 *.filters
 x64/
 
+# VSCode
+*.json
+.vscode/
+
 # CMake
 *.cmake
 CMakeFiles/

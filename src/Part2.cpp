@@ -14,11 +14,9 @@
     #define GL_SILENCE_DEPRECATION
     #include <OpenGL/gl.h>
     #include <OpenGL/glu.h>
-
 #else
     #include <GL/gl.h>
     #include <GL/glu.h>
-
 #endif // XCODE_SET_IN_GLOBALS
 
 GLuint listMove; // Define name for display list.
@@ -174,7 +172,7 @@ void winReshapeFcn (GLint newWidth, GLint newHeight)
 void Part2::runPart2()
 {
     initrand();
-    glutCreateWindow("Part 2");
+    p2_window_id = glutCreateWindow("Part 2");
     init ( );
     glutDisplayFunc (displayHex);
     glutReshapeFunc (winReshapeFcn);
