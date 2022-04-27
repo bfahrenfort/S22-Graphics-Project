@@ -22,7 +22,9 @@
 
 int p1_window_id = -1;
 
+// Point acquiring utilities
 bool acquired_points = false;
+int fuzz = 40;
 
 // Transformation utilities
 std::vector<Vec2<GLint>> polygon_points{ };
@@ -39,6 +41,14 @@ void party()
     blue = randf();
 }
 
+bool point_fuzz(GLint x, GLint y, Vec2<GLint> point)
+{
+    if(x < point.x + fuzz && x > point.x - fuzz && y < point.y + fuzz && y > point.y - fuzz)
+        return true;
+
+    return false;
+}
+
 void init()
 {
     // TODO: acquire polygon points
@@ -53,6 +63,7 @@ void p1_display()
     
     if (acquired_points)
     {
+        std::cout << "displaying" << std::endl;
         glPushMatrix();
         glColor3f(red, green, blue);
         glTranslatef(cur_translate.x, cur_translate.y, 1.0);
@@ -68,6 +79,49 @@ void p1_display()
     }
 }
 
+void p1_idle()
+{
+    glutPostRedisplay();
+}
+
+void p1_mouse(GLint button, GLint action, GLint x, GLint y)
+{
+    switch (button) {
+        case GLUT_LEFT_BUTTON: // Start the rotation.
+            if (action == GLUT_DOWN)
+            {
+                if(!acquired_points) // keep accepting points
+                {
+                    if (polygon_points.size() > 1 && point_fuzz(x, y, polygon_points.at(0)))
+                    {
+                        acquired_points = true;
+                        glutIdleFunc(p1_idle);
+                    }
+                    else
+                        polygon_points.push_back(Vec2<GLint>(x, y));
+                }
+                else
+                {
+                    // get modifiers and translate or scale
+                }
+            }
+            break;
+        case GLUT_RIGHT_BUTTON: // Stop the rotation.
+            if (action == GLUT_DOWN)
+            {
+                if(p2_window_id < 0)
+                    exit(0);
+                else
+                {
+                    p1_window_id = -1;
+                    glutDestroyWindow(p1_window_id);
+                }
+            }
+            break;
+        default:
+            break;
+    }
+}
 
 void Part1::runPart1()
 {
@@ -76,5 +130,6 @@ void Part1::runPart1()
     p1_window_id = glutCreateWindow("Part 1");
     glutDisplayFunc(p1_display);
     //glutReshapeFunc (winReshapeFcn);
-    //glutMouseFunc (mouseFcn);
+    glutIdleFunc(nullptr);
+    glutMouseFunc(p1_mouse);
 }
