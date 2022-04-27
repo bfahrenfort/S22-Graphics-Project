@@ -14,11 +14,9 @@
     #define GL_SILENCE_DEPRECATION
     #include <OpenGL/gl.h>
     #include <OpenGL/glu.h>
-
 #else
     #include <GL/gl.h>
     #include <GL/glu.h>
-
 #endif // XCODE_SET_IN_GLOBALS
 
 GLuint listMove; // Define name for display list.
