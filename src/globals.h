@@ -20,4 +20,6 @@ void initrand();
 // Pretty colors
 float randf();
 
+void regular_polygon_points(double radius, int num_verts);
+
 #endif //GRAPHICSGROUPPROJECT_GLOBALS_H

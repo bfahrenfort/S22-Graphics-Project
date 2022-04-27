@@ -28,7 +28,7 @@ int fuzz = 40;
 
 // Transformation utilities
 std::vector<Vec2<GLint>> polygon_points{ };
-Vec2<GLfloat> cur_translate, cur_scale{ };
+Vec2<GLfloat> cur_translate(0, 0), cur_scale(1, 1);
 GLfloat rotTheta{ };
 
 // Color
@@ -51,8 +51,6 @@ bool point_fuzz(GLint x, GLint y, Vec2<GLint> point)
 
 void init()
 {
-    // TODO: acquire polygon points
-
     party();
 }
 
@@ -61,14 +59,14 @@ void p1_display()
     glClearColor (1.0, 1.0, 1.0, 0.0);
     glClear(GL_COLOR_BUFFER_BIT);
     
-    if (acquired_points)
+    if (acquired_points) // draw the polygon
     {
         std::cout << "displaying" << std::endl;
         glPushMatrix();
         glColor3f(red, green, blue);
         glTranslatef(cur_translate.x, cur_translate.y, 1.0);
         glRotatef(rotTheta, 0, 0, 1.0);
-        glScalef(cur_scale.x, cur_scale.y, 0);
+        glScalef(cur_scale.x, cur_scale.y, 1.0);
 
         glBegin(GL_POLYGON);
         for(Vec2<GLint> p : polygon_points)
@@ -76,6 +74,25 @@ void p1_display()
         glEnd();
 
         glPopMatrix();
+    }
+    else // Draw points we've done so far
+    {
+        bool first = true;
+        Vec2<GLint> current;
+        for(int i = 0; i < polygon_points.size(); ++i)
+        {
+            current = polygon_points.at(i);
+            glPushMatrix();
+            glColor3f(first ? 1.0 : 0, 0, first ? 0 : 1.0);
+            glTranslatef(current.x, current.y, 0);
+
+            glBegin(GL_POLYGON);
+            regular_polygon_points(fuzz, 16);
+            glEnd();
+
+            glPopMatrix();
+            first = false;
+        }
     }
 
     glutSwapBuffers();
@@ -101,11 +118,14 @@ void p1_mouse(GLint button, GLint action, GLint x, GLint y)
                         glutIdleFunc(p1_idle);
                     }
                     else
+                    {
                         polygon_points.push_back(Vec2<GLint>(x, y));
+                        glutPostRedisplay();
+                    }
                 }
                 else
                 {
-                    // get modifiers and translate or scale
+                    // get modifiers and set to translate or idle func as necessary
                 }
             }
             break;
@@ -135,7 +155,7 @@ static void p1_reshape (GLint newWidth, GLint newHeight)
     glMatrixMode (GL_PROJECTION);
     glLoadIdentity ( );
 
-    gluOrtho2D (-p1_window_width/2, p1_window_width/2, -p1_window_height/2, p1_window_height/2);
+    gluOrtho2D (0, p1_window_width, p1_window_height, 0);
     glMatrixMode (GL_MODELVIEW);
     glLoadIdentity ( );
     glClear (GL_COLOR_BUFFER_BIT);
