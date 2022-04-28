@@ -23,17 +23,16 @@
 int p1_window_id = -1;
 
 // Point acquiring utilities
-bool acquired_points = false;
-int fuzz = 40;
+static bool acquired_points = false;
+static int fuzz = 10;
 
 // Transformation utilities
-std::vector<Vec2<GLint>> polygon_points{ };
-Vec2<GLfloat> cur_translate(0, 0), cur_scale(1, 1);
-GLfloat rotTheta{ };
+static std::vector<Vec2<GLint>> polygon_points{ };
+static Vec2<GLfloat> cur_translate(0, 0), cur_scale(1, 1);
+static GLfloat rotTheta{ };
 
 // Color
 static GLfloat red{ }, green{ }, blue{ };
-
 void party()
 {
     red = randf();
@@ -41,7 +40,8 @@ void party()
     blue = randf();
 }
 
-bool point_fuzz(GLint x, GLint y, Vec2<GLint> point)
+// Check if an X and Y are within fuzz range of a preexisting point
+static bool point_fuzz(GLint x, GLint y, Vec2<GLint> point)
 {
     if(x < point.x + fuzz && x > point.x - fuzz && y < point.y + fuzz && y > point.y - fuzz)
         return true;
@@ -49,19 +49,20 @@ bool point_fuzz(GLint x, GLint y, Vec2<GLint> point)
     return false;
 }
 
-void init()
+// Setup the environment
+static void init()
 {
     party();
 }
 
-void p1_display()
+// Update the display
+static void p1_display()
 {
     glClearColor (1.0, 1.0, 1.0, 0.0);
     glClear(GL_COLOR_BUFFER_BIT);
     
     if (acquired_points) // draw the polygon
     {
-        std::cout << "displaying" << std::endl;
         glPushMatrix();
         glColor3f(red, green, blue);
         glTranslatef(cur_translate.x, cur_translate.y, 1.0);
@@ -83,9 +84,10 @@ void p1_display()
         {
             current = polygon_points.at(i);
             glPushMatrix();
-            glColor3f(first ? 1.0 : 0, 0, first ? 0 : 1.0);
-            glTranslatef(current.x, current.y, 0);
+            glColor3f(first ? 1.0 : 0, 0, first ? 0 : 1.0); // First point is special
+            glTranslatef(current.x, current.y, 0); // Center around the point
 
+            // Simple circle
             glBegin(GL_POLYGON);
             regular_polygon_points(fuzz, 16);
             glEnd();
@@ -99,37 +101,43 @@ void p1_display()
     glFlush();
 }
 
-void p1_idle()
+// While idle, rotate
+static void p1_idle()
 {
     glutPostRedisplay();
 }
 
-void p1_mouse(GLint button, GLint action, GLint x, GLint y)
+// Handle mouse clicks
+static void p1_mouse(GLint button, GLint action, GLint x, GLint y)
 {
     switch (button) {
-        case GLUT_LEFT_BUTTON: // Start the rotation.
+        case GLUT_LEFT_BUTTON:
             if (action == GLUT_DOWN)
             {
                 if(!acquired_points) // keep accepting points
                 {
-                    if (polygon_points.size() > 1 && point_fuzz(x, y, polygon_points.at(0)))
+                    if (polygon_points.size() > 1 && point_fuzz(x, y, polygon_points.at(0))) // We've completed the polygon
                     {
                         acquired_points = true;
                         glutIdleFunc(p1_idle);
                     }
-                    else
+                    else // Add this point and go again
                     {
-                        polygon_points.push_back(Vec2<GLint>(x, y));
+                        polygon_points.push_back(Vec2<GLint>(x, y)); 
                         glutPostRedisplay();
                     }
                 }
-                else
+                else // Handle translate/scale/reverse
                 {
-                    // get modifiers and set to translate or idle func as necessary
+                    // Get modifiers
+
+                    // Set boolean for shift and ctrl
+
+                    // Set rotation multiplier based on alt
                 }
             }
             break;
-        case GLUT_RIGHT_BUTTON: // Stop the rotation.
+        case GLUT_RIGHT_BUTTON: // Stop the program
             if (action == GLUT_DOWN)
             {
                 if(p2_window_id < 0)
@@ -137,6 +145,7 @@ void p1_mouse(GLint button, GLint action, GLint x, GLint y)
                 else
                 {
                     p1_window_id = -1;
+                    glutIdleFunc(NULL);
                     glutDestroyWindow(p1_window_id);
                 }
             }
@@ -146,11 +155,11 @@ void p1_mouse(GLint button, GLint action, GLint x, GLint y)
     }
 }
 
+// Resize the window
 static void p1_reshape (GLint newWidth, GLint newHeight)
 {
     p1_window_width = newWidth;
     p1_window_height = newHeight;
-    //update_positions();
     glViewport (0, 0, (GLsizei) newWidth, (GLsizei) newHeight);
     glMatrixMode (GL_PROJECTION);
     glLoadIdentity ( );

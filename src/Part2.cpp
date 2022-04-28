@@ -19,12 +19,13 @@
     #include <GL/glu.h>
 #endif // XCODE_SET_IN_GLOBALS
 
-GLuint listMove; // Define name for display list.
-GLfloat red = 0, green = 0, blue = 0;
+// General
 int p2_window_id = -1;
+static GLuint listMove; // Define name for display list.
+static GLfloat red = 0, green = 0, blue = 0;
 
 // Animation calculations
-const int poly_radius = 60;
+static const int poly_radius = 60;
 static GLfloat rotTheta = 0.0;
 static GLfloat rotMultiplier = 1.0;
 static Vec2<GLint> left_pos;
@@ -39,54 +40,55 @@ static void update_positions()
 }
 
 // Ignore this
-static void rave(void)
+static void rave()
 {
     red = randf();
     green = randf();
     blue = randf();
 }
 
-static void init (void)
+// Initialize positions and colors
+static void init()
 {
-    // Initialize vectors and colors
     update_positions();
     cur_pos = Vec2<GLint>(left_pos);
     red = randf();
     green = randf();
     blue = randf();
-    glClearColor (1.0, 1.0, 1.0, 0.0);
-    glColor3f (red, green, blue);
+    glClearColor(1.0, 1.0, 1.0, 0.0);
+    glColor3f(red, green, blue);
 
-    listMove = glGenLists (1);
-    glNewList (listMove, GL_COMPILE);
+    listMove = glGenLists(1);
+    glNewList(listMove, GL_COMPILE);
 
     // Draw our circle
-    glBegin (GL_POLYGON);
+    glBegin(GL_POLYGON);
     regular_polygon_points(poly_radius, 16);
-    glEnd ( );
-    glEndList ( );
+    glEnd();
+    glEndList();
 }
 
-static void displayHex (void)
+// Display our ball
+static void displayBall()
 {
     auto temp_pos(cur_pos);
-    glClear (GL_COLOR_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT);
 
     // Perform appropriate transforms
-    glPushMatrix ( );
-    glColor3f (red, green, blue);
+    glPushMatrix();
+    glColor3f(red, green, blue);
     glTranslated(temp_pos.x, temp_pos.y, 0);
-    glRotatef (rotTheta, 0, 0, 1.0);
+    glRotatef(rotTheta, 0, 0, 1.0);
     glTranslated(0, 0, 0);
 
     // Draw and commit to screen
-    glCallList (listMove);
-    glPopMatrix ( );
-    glutSwapBuffers ( );
-    glFlush ( );
+    glCallList(listMove);
+    glPopMatrix();
+    glutSwapBuffers();
+    glFlush();
 }
 
-static void move ()
+static void move()
 {
     // Move the ball
     cur_pos.x = cur_pos.x + 3.0 * rotMultiplier * (movingLeft ? -1 : 1);
@@ -108,10 +110,10 @@ static void move ()
     if (rotTheta > 360.0)
         rotTheta -= 360.0;
 
-    glutPostRedisplay ( );
+    glutPostRedisplay();
 }
 
-static void mouseFcn (GLint button, GLint action, GLint x, GLint y)
+static void mouseFcn(GLint button, GLint action, GLint x, GLint y)
 {
     switch (button) {
         case GLUT_LEFT_BUTTON: // Start the rotation.
@@ -124,7 +126,7 @@ static void mouseFcn (GLint button, GLint action, GLint x, GLint y)
         case GLUT_RIGHT_BUTTON: // Stop the rotation.
             if (action == GLUT_DOWN)
             {
-                if(p1_window_id < 0)
+                if (p1_window_id < 0)
                     exit(0);
                 else
                 {
@@ -141,27 +143,27 @@ static void mouseFcn (GLint button, GLint action, GLint x, GLint y)
 }
 
 
-static void winReshapeFcn (GLint newWidth, GLint newHeight)
+static void winReshapeFcn(GLint newWidth, GLint newHeight)
 {
     p2_window_width = newWidth;
     p2_window_height = newHeight;
     update_positions();
-    glViewport (0, 0, (GLsizei) newWidth, (GLsizei) newHeight);
-    glMatrixMode (GL_PROJECTION);
-    glLoadIdentity ( );
+    glViewport(0, 0, (GLsizei) newWidth, (GLsizei) newHeight);
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity( );
 
-    gluOrtho2D (-p2_window_width/2, p2_window_width/2, -p2_window_height/2, p2_window_height/2);
-    glMatrixMode (GL_MODELVIEW);
-    glLoadIdentity ( );
-    glClear (GL_COLOR_BUFFER_BIT);
+    gluOrtho2D(-p2_window_width/2, p2_window_width/2, -p2_window_height/2, p2_window_height/2);
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity( );
+    glClear(GL_COLOR_BUFFER_BIT);
 }
 
 void Part2::runPart2()
 {
     initrand();
     p2_window_id = glutCreateWindow("Part 2");
-    init ( );
-    glutDisplayFunc (displayHex);
-    glutReshapeFunc (winReshapeFcn);
-    glutMouseFunc (mouseFcn);
+    init();
+    glutDisplayFunc(displayBall);
+    glutReshapeFunc(winReshapeFcn);
+    glutMouseFunc(mouseFcn);
 }
