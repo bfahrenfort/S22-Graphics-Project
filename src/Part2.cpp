@@ -128,8 +128,10 @@ static void mouseFcn (GLint button, GLint action, GLint x, GLint y)
                     exit(0);
                 else
                 {
+                    int p2wid = p2_window_id;
                     p2_window_id = -1;
-                    glutDestroyWindow(p2_window_id);
+                    glutIdleFunc(NULL);
+                    glutDestroyWindow(p2wid);
                 }
             }
             break;
