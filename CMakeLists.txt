@@ -26,7 +26,7 @@ set(SOURCE_FILES src/main.cpp src/Part1.cpp src/Part2.cpp src/globals.cpp)
 # OpenGL vars
 find_package(OpenGL REQUIRED)
 find_package(GLUT REQUIRED)
-include_directories(${OPENGL_INCLUDE_DIR} GLUT_INCLUDE_DIRS)
+include_directories(${OPENGL_INCLUDE_DIR} ${GLUT_INCLUDE_DIRS})
 
 # Executable creation and linking
 add_executable(GraphicsGroupProject ${SOURCE_FILES})
