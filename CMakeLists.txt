@@ -32,3 +32,11 @@ include_directories(${OPENGL_INCLUDE_DIR} ${GLUT_INCLUDE_DIRS})
 add_executable(GraphicsGroupProject ${SOURCE_FILES})
 target_link_libraries(GraphicsGroupProject OpenGL::GL OpenGL::GLU GLUT::GLUT vector)
 target_compile_features(GraphicsGroupProject PRIVATE cxx_std_20)
+
+# Copy the dynamic libraries to binary folder after build
+if(WIN32) # FreeGLUT is packaged as a stub .lib plus a .DLL
+  add_custom_command (TARGET GraphicsGroupProject POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+      "${CMAKE_CURRENT_LIST_DIR}/lib"
+      $<TARGET_FILE_DIR:GraphicsGroupProject>)
+endif()
