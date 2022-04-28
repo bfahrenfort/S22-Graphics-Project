@@ -4,6 +4,13 @@
 #include <random>
 #include <numbers>
 
+#ifdef __APPLE__
+#define GL_SILENCE_DEPRECATION
+    #include <GLUT/glut.h>
+#else
+    #include <GL/glut.h>
+#endif // __APPLE__
+
 #ifdef XCODE_SET_IN_GLOBALS
     #define GL_SILENCE_DEPRECATION
     #include <OpenGL/gl.h>
