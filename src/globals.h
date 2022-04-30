@@ -2,7 +2,7 @@
 #define GRAPHICSGROUPPROJECT_GLOBALS_H
 
 // Set this if using XCode
-//#define XCODE_SET_IN_GLOBALS
+#define XCODE_SET_IN_GLOBALS
 
 extern int p1_window_width;
 extern int p1_window_height;

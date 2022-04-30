@@ -3,6 +3,7 @@
 #include "vector/vec_2.hpp"
 
 #ifdef __APPLE__
+    #define GL_SILENCE_DEPRECATION
     #include <GLUT/glut.h>
 #else
     #include <GL/glut.h>
@@ -24,7 +25,7 @@ int p1_window_id = -1;
 
 // Point acquiring utilities
 static bool acquired_points = false;
-static int fuzz = 10;
+static int fuzz = 5;
 
 // Transformation utilities
 static std::vector<Vec2<GLint>> polygon_points{ };
