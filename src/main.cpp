@@ -28,7 +28,7 @@ int main(int argc, char **argv)
 {
     // Initialize GLUT
     glutInit(&argc, argv);
-    glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_CONTINUE_EXECUTION);
+    //glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_CONTINUE_EXECUTION);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
 
     // Start part 1 window
