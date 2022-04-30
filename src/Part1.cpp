@@ -26,6 +26,7 @@ int p1_window_id = -1;
 // Point acquiring utilities
 static bool acquired_points = false;
 static int fuzz = 5;
+static bool modifier_button = true;
 
 // Transformation utilities
 static std::vector<Vec2<GLint>> polygon_points{ };
@@ -108,9 +109,12 @@ static void p1_idle()
     glutPostRedisplay();
 }
 
+
+
 // Handle mouse clicks
 static void p1_mouse(GLint button, GLint action, GLint x, GLint y)
 {
+    int mods;
     switch (button) {
         case GLUT_LEFT_BUTTON:
             if (action == GLUT_DOWN)
@@ -130,10 +134,26 @@ static void p1_mouse(GLint button, GLint action, GLint x, GLint y)
                 }
                 else // Handle translate/scale/reverse
                 {
+                    // Translate:
+                    if (action == GLUT_DOWN)
+                        
+                    
                     // Get modifiers
+                mods = glutGetModifiers();
+                    if (mods & GLUT_ACTIVE_SHIFT)
+                    {
+                        //ButtonState = 2;
+                    }
+                    else if (mods & GLUT_ACTIVE_CTRL)
+                    {
+                        //ButtonState = 3;
+                    }
+
+                        //MouseX = x; MouseY = y;
 
                     // Set boolean for shift and ctrl
-
+                    // shift_key = true;
+                    // ctrl_key = true;
                     // Set rotation multiplier based on alt
                 }
             }
@@ -180,4 +200,5 @@ void Part1::runPart1()
     glutReshapeFunc (p1_reshape);
     glutIdleFunc(nullptr);
     glutMouseFunc(p1_mouse);
+    //glutPassiveMotionFunc(p1_mouse);
 }
