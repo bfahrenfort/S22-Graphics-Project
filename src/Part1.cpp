@@ -136,15 +136,19 @@ static void p1_mouse(GLint button, GLint action, GLint x, GLint y)
                 {
                     // Translate:
                     if (action == GLUT_DOWN)
+                        cur_translate.x = 1;
+                        cur_translate.y = 2;
+                        
                         
                     
                     // Get modifiers
                 mods = glutGetModifiers();
                     if (mods & GLUT_ACTIVE_SHIFT)
                     {
-                        //ButtonState = 2;
+                        cur_scale.x = 1;
+                        cur_scale.y = 2;
                     }
-                    else if (mods & GLUT_ACTIVE_CTRL)
+                    else if (mods & GLUT_ACTIVE_ALT)
                     {
                         //ButtonState = 3;
                     }

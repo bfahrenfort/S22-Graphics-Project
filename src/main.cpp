@@ -4,7 +4,7 @@
 
 #ifdef __APPLE__
     #define GL_SILENCE_DEPRECATION
-    #include <GLUT/GLUT.h>
+    #include <GLUT/glut.h>
 #else
     #include <GL/glut.h>
 #endif // __APPLE__
