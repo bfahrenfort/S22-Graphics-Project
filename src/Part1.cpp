@@ -145,20 +145,18 @@ static void p1_mouse(GLint button, GLint action, GLint x, GLint y)
                 mods = glutGetModifiers();
                     if (mods & GLUT_ACTIVE_SHIFT)
                     {
-                        cur_scale.x = 1;
-                        cur_scale.y = 2;
+                        cur_scale.x = 100;
+                        cur_scale.y = 200;
                     }
                     else if (mods & GLUT_ACTIVE_ALT)
                     {
-                        //ButtonState = 3;
+                        // stuff for roatate
                     }
 
-                        //MouseX = x; MouseY = y;
-
                     // Set boolean for shift and ctrl
-                    // shift_key = true;
-                    // ctrl_key = true;
-                    // Set rotation multiplier based on alt
+                    //shift_key = true;
+                    //ctrl_key = true;
+                    
                 }
             }
             break;
