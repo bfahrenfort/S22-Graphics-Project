@@ -119,6 +119,10 @@ static void p1_mouse(GLint button, GLint action, GLint x, GLint y)
     int mods;
     switch (button) {
         case GLUT_LEFT_BUTTON:
+            if (action == GLUT_UP)
+            {
+                shift_down  = false;
+            }
             if (action == GLUT_DOWN)
             {
                 if(!acquired_points) // keep accepting points
@@ -163,10 +167,7 @@ static void p1_mouse(GLint button, GLint action, GLint x, GLint y)
                 }
                 
             }
-            if (action == GLUT_UP)
-            {
-                shift_down  = false;
-            }
+            
             break;
         case GLUT_RIGHT_BUTTON: // Stop the program
             if (action == GLUT_DOWN)
