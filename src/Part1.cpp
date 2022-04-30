@@ -163,7 +163,7 @@ static void p1_mouse(GLint button, GLint action, GLint x, GLint y)
                 }
                 
             }
-            else (action == GLUT_UP)
+            if (action == GLUT_UP)
             {
                 shift_down  = false;
             }
