@@ -27,6 +27,8 @@ int p1_window_id = -1;
 static bool acquired_points = false;
 static int fuzz = 5;
 static bool modifier_button = true;
+static bool shift_down = false;
+
 
 // Transformation utilities
 static std::vector<Vec2<GLint>> polygon_points{ };
@@ -136,8 +138,8 @@ static void p1_mouse(GLint button, GLint action, GLint x, GLint y)
                 {
                     // Translate:
                     if (action == GLUT_DOWN)
-                        cur_translate.x = 1;
-                        cur_translate.y = 2;
+                        cur_translate.x = 10;
+                        cur_translate.y = 20;
                         
                         
                     
@@ -145,8 +147,9 @@ static void p1_mouse(GLint button, GLint action, GLint x, GLint y)
                 mods = glutGetModifiers();
                     if (mods & GLUT_ACTIVE_SHIFT)
                     {
-                        cur_scale.x = 100;
-                        cur_scale.y = 200;
+                        shift_down = true;
+                        cur_scale.x = 1;
+                        cur_scale.y = 2;
                     }
                     else if (mods & GLUT_ACTIVE_ALT)
                     {
@@ -158,6 +161,11 @@ static void p1_mouse(GLint button, GLint action, GLint x, GLint y)
                     //ctrl_key = true;
                     
                 }
+                
+            }
+            else if(action == GLUT_UP)
+            {
+                shift_down  = false;
             }
             break;
         case GLUT_RIGHT_BUTTON: // Stop the program
