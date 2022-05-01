@@ -149,9 +149,10 @@ static void p1_mouse(GLint button, GLint action, GLint x, GLint y)
                     exit(0);
                 else
                 {
+                    int p1wid = p1_window_id;
                     p1_window_id = -1;
                     glutIdleFunc(NULL);
-                    glutDestroyWindow(p1_window_id);
+                    glutDestroyWindow(p1wid);
                 }
             }
             break;
