@@ -155,6 +155,8 @@ static void p1_mouse(GLint button, GLint action, GLint x, GLint y)
     }
 }
 
+
+
 // Resize the window
 static void p1_reshape (GLint newWidth, GLint newHeight)
 {
