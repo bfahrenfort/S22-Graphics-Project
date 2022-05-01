@@ -94,7 +94,7 @@ static void move()
     cur_pos.x = cur_pos.x + 3.0 * rotMultiplier * (movingLeft ? -1 : 1);
     cur_pos.y = poly_radius - p2_window_height/2;
 
-    // Swap directions if needed
+    // Swap directions of it, if needed
     bool t_movingLeft = movingLeft;
     if (cur_pos.x > right_pos.x)
         movingLeft = true;
@@ -141,6 +141,8 @@ static void mouseFcn(GLint button, GLint action, GLint x, GLint y)
             break;
     }
 }
+
+
 
 
 static void winReshapeFcn(GLint newWidth, GLint newHeight)
