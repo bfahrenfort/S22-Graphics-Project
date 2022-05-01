@@ -3,19 +3,19 @@
 #include "vector/vec_2.hpp"
 
 #ifdef __APPLE__
-    #include <GLUT/glut.h>
+#include <GLUT/glut.h>
 #else
-    #include <GL/glut.h>
+#include <GL/glut.h>
 
 #endif // __APPLE__
 
 #ifdef XCODE_SET_IN_GLOBALS
-    #define GL_SILENCE_DEPRECATION
+#define GL_SILENCE_DEPRECATION
     #include <OpenGL/gl.h>
     #include <OpenGL/glu.h>
 #else
-    #include <GL/gl.h>
-    #include <GL/glu.h>
+#include <GL/gl.h>
+#include <GL/glu.h>
 #endif // XCODE_SET_IN_GLOBALS
 
 #include <vector>
@@ -29,7 +29,7 @@ static int fuzz = 10;
 // Transformation utilities
 static std::vector<Vec2<GLint>> polygon_points{ };
 static Vec2<GLfloat> cur_translate(0, 0), cur_scale(1, 1);
-static GLfloat rotTheta{ };
+static GLfloat rotTheta = 0.0;
 
 // Color
 static GLfloat red{ }, green{ }, blue{ };
@@ -60,13 +60,14 @@ static void p1_display()
 {
     glClearColor (1.0, 1.0, 1.0, 0.0);
     glClear(GL_COLOR_BUFFER_BIT);
-    
+
     if (acquired_points) // draw the polygon
     {
         glPushMatrix();
         glColor3f(red, green, blue);
-        glTranslatef(cur_translate.x, cur_translate.y, 1.0);
+        glTranslated(cur_translate.x, cur_translate.y, 0);
         glRotatef(rotTheta, 0, 0, 1.0);
+        glTranslated(0, 0, 0);
         glScalef(cur_scale.x, cur_scale.y, 1.0);
 
         glBegin(GL_POLYGON);
@@ -104,6 +105,10 @@ static void p1_display()
 // While idle, rotate
 static void p1_idle()
 {
+    rotTheta += 0.1;
+    if (rotTheta > 360.0)
+        rotTheta -= 360.0;
+
     glutPostRedisplay();
 }
 
@@ -123,7 +128,7 @@ static void p1_mouse(GLint button, GLint action, GLint x, GLint y)
                     }
                     else // Add this point and go again
                     {
-                        polygon_points.push_back(Vec2<GLint>(x, y)); 
+                        polygon_points.push_back(Vec2<GLint>(x, y));
                         glutPostRedisplay();
                     }
                 }
@@ -166,7 +171,7 @@ static void p1_reshape (GLint newWidth, GLint newHeight)
     glMatrixMode (GL_PROJECTION);
     glLoadIdentity ( );
 
-    gluOrtho2D (0, p1_window_width, p1_window_height, 0);
+    gluOrtho2D(0, p1_window_width, p1_window_height, 0);
     glMatrixMode (GL_MODELVIEW);
     glLoadIdentity ( );
     glClear (GL_COLOR_BUFFER_BIT);
