@@ -6,4 +6,5 @@ namespace Part1
   void runPart1();
 }
 
+
 #endif //GRAPHICSGROUPPROJECT_PART1_HPP

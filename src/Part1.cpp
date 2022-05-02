@@ -24,7 +24,7 @@ int p1_window_id = -1;
 
 // Point acquiring utilities
 static bool acquired_points = false;
-static int fuzz = 10;
+static int fuzz = 4;
 
 // Transformation utilities
 static std::vector<Vec2<GLint>> polygon_points{ };
@@ -54,6 +54,23 @@ static void init()
 {
     party();
 }
+float avgofArrayx(std::vector<Vec2<GLint>>polygon_pointsx) {
+    float a = 0.0;
+    for (int i = 0; i < polygon_pointsx.size(); ++i) {
+        a = polygon_pointsx[i].x + a;
+    }
+    a = a / polygon_pointsx.size();
+    return a;
+}
+
+float avgofArrayy(std::vector<Vec2<GLint>>polygon_pointsy) {
+    float a = 0.0;
+    for (int i = 0; i < polygon_pointsy.size(); ++i) {
+        a = polygon_pointsy[i].y + a;
+    }
+    a = a / polygon_pointsy.size();
+    return a;
+}
 
 // Update the display
 static void p1_display()
@@ -65,9 +82,9 @@ static void p1_display()
     {
         glPushMatrix();
         glColor3f(red, green, blue);
-        glTranslated(cur_translate.x, cur_translate.y, 0);
-        glRotatef(rotTheta, 0, 0, 1.0);
-        glTranslated(0, 0, 0);
+        glTranslated(avgofArrayx(polygon_points), avgofArrayy(polygon_points), 0);
+        glRotatef(rotTheta, 0, 0, 1);
+        glTranslated(-avgofArrayx(polygon_points), -avgofArrayy(polygon_points), 0);
         glScalef(cur_scale.x, cur_scale.y, 1.0);
 
         glBegin(GL_POLYGON);
@@ -97,11 +114,9 @@ static void p1_display()
             first = false;
         }
     }
-
     glutSwapBuffers();
     glFlush();
 }
-
 // While idle, rotate
 static void p1_idle()
 {
@@ -112,6 +127,8 @@ static void p1_idle()
     glutPostRedisplay();
 }
 
+
+
 // Handle mouse clicks
 static void p1_mouse(GLint button, GLint action, GLint x, GLint y)
 {
@@ -121,9 +138,10 @@ static void p1_mouse(GLint button, GLint action, GLint x, GLint y)
             {
                 if(!acquired_points) // keep accepting points
                 {
-                    if (polygon_points.size() > 1 && point_fuzz(x, y, polygon_points.at(0))) // We've completed the polygon
+                    if (polygon_points.size() > 2 && point_fuzz(x, y, polygon_points.at(0))) // We've completed the polygon
                     {
                         acquired_points = true;
+
                         glutIdleFunc(p1_idle);
                     }
                     else // Add this point and go again
