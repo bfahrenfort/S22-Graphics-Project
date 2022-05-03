@@ -29,7 +29,9 @@ static int fuzz = 4;
 // Transformation utilities
 static std::vector<Vec2<GLint>> polygon_points{ };
 static Vec2<GLfloat> cur_translate(0, 0), cur_scale(1, 1);
-static GLfloat rotTheta = 0.0;
+static GLfloat rotTheta[] = {0.0,0.0,0.0};
+static GLint rotate = 0;
+
 
 // Color
 static GLfloat red{ }, green{ }, blue{ };
@@ -54,6 +56,7 @@ static void init()
 {
     party();
 }
+
 float avgofArrayx(std::vector<Vec2<GLint>>polygon_pointsx) {
     float a = 0.0;
     for (int i = 0; i < polygon_pointsx.size(); ++i) {
@@ -83,7 +86,8 @@ static void p1_display()
         glPushMatrix();
         glColor3f(red, green, blue);
         glTranslated(avgofArrayx(polygon_points), avgofArrayy(polygon_points), 0);
-        glRotatef(rotTheta, 0, 0, 1);
+        glRotatef(rotTheta[0], 0, 0, -1);
+        glRotatef(rotTheta[1], 0, 0, 1);
         glTranslated(-avgofArrayx(polygon_points), -avgofArrayy(polygon_points), 0);
         glScalef(cur_scale.x, cur_scale.y, 1.0);
 
@@ -120,18 +124,17 @@ static void p1_display()
 // While idle, rotate
 static void p1_idle()
 {
-    rotTheta += 0.1;
-    if (rotTheta > 360.0)
-        rotTheta -= 360.0;
+    rotTheta[rotate] += 0.04;
+    if(rotTheta[rotate] > 360.0)
+        rotTheta[rotate] -= 360.0;
 
     glutPostRedisplay();
 }
 
-
-
 // Handle mouse clicks
 static void p1_mouse(GLint button, GLint action, GLint x, GLint y)
 {
+    int mods;
     switch (button) {
         case GLUT_LEFT_BUTTON:
             if (action == GLUT_DOWN)
@@ -152,11 +155,22 @@ static void p1_mouse(GLint button, GLint action, GLint x, GLint y)
                 }
                 else // Handle translate/scale/reverse
                 {
-                    // Get modifiers
+                    mods = glutGetModifiers();
 
-                    // Set boolean for shift and ctrl
+                    if (mods & GLUT_ACTIVE_SHIFT)
+                    {
 
-                    // Set rotation multiplier based on alt
+                    }
+                    if (mods & GLUT_ACTIVE_CTRL)
+                    {
+
+                    }
+                    if (mods & GLUT_ACTIVE_ALT) {
+                        rotate = 1;
+                        party();
+                    }
+
+                    //MouseX = x; MouseY = y;
                 }
             }
             break;
@@ -178,8 +192,6 @@ static void p1_mouse(GLint button, GLint action, GLint x, GLint y)
             break;
     }
 }
-
-
 
 // Resize the window
 static void p1_reshape (GLint newWidth, GLint newHeight)
