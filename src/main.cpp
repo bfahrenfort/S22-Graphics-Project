@@ -4,9 +4,9 @@
 
 #ifdef __APPLE__
 #define GL_SILENCE_DEPRECATION
-    #include <GLUT/freeglut.h>
+    #include <GLUT/glut.h>
 #else
-    #include <GL/freeglut.h>
+    #include <GL/glut.h>
 #endif // __APPLE__
 
 #ifdef XCODE_SET_IN_GLOBALS
@@ -28,7 +28,6 @@ int main(int argc, char **argv)
 {
     // Initialize GLUT
     glutInit(&argc, argv);
-    glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_CONTINUE_EXECUTION);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
 
     // Start part 1 window
