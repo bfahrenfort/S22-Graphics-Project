@@ -29,7 +29,7 @@ static int fuzz = 4;
 // Transformation utilities
 static std::vector<Vec2<GLint>> polygon_points{ };
 static Vec2<GLfloat> cur_translate(0, 0), cur_scale(1, 1);
-static GLfloat rotTheta[] = {0.0,0.0,0.0};
+static GLfloat rotTheta[] = {0.0,0.0};
 static GLint rotate = 0;
 
 
@@ -166,7 +166,7 @@ static void p1_mouse(GLint button, GLint action, GLint x, GLint y)
 
                     }
                     if (mods & GLUT_ACTIVE_ALT) {
-                        rotate = 1;
+                        rotate = (rotate + 1) % 2;
                         party();
                     }
 
