@@ -87,15 +87,14 @@ static void p1_display()
     {
         glPushMatrix();
 
-        // 5: color
+        // 6: color
         glColor3f(red, green, blue);
+
+        // 5: Translate back to desired position
+        glTranslated(cur_translate.x, cur_translate.y, 0);
 
         // 4: scale
         glScalef(cur_scale.x, cur_scale.y, 1.0);
-
-        // 6: Translate back to desired position
-        glTranslated(cur_translate.x, cur_translate.y, 0);
-        //glTranslated(avgofArrayx(polygon_points), avgofArrayy(polygon_points), 0);
 
         // 2: rotate around Z axis
         glRotatef(rotTheta, 0, 0, 1);
@@ -147,9 +146,14 @@ void p1_motion(int x, int y)
 {
     if (translate)
     {
-        std::cout << x << " " << y << std::endl;
         cur_translate.x = abs(x);
         cur_translate.y = abs(y);
+    }
+
+    if (scale)
+    {
+        cur_scale.x = abs((x - cur_translate.x) / 50);
+        cur_scale.y = abs((y - cur_translate.y) / 50);
     }
 }
 
