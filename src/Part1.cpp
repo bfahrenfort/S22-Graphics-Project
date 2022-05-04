@@ -24,13 +24,14 @@ int p1_window_id = -1;
 
 // Point acquiring utilities
 static bool acquired_points = false;
-static int fuzz = 4;
+static int fuzz = 8;
 
 // Transformation utilities
 static std::vector<Vec2<GLint>> polygon_points{ };
 static Vec2<GLfloat> cur_translate(0, 0), cur_scale(1, 1);
 static GLfloat rotTheta = 0.0;
 static GLint rotMultiplier = 1;
+static GLfloat rotBase = 0.4;
 bool scale = false, translate = false;
 
 
@@ -92,8 +93,9 @@ static void p1_display()
         // 4: scale
         glScalef(cur_scale.x, cur_scale.y, 1.0);
 
-        // 3: translate back to itself
-        glTranslated(avgofArrayx(polygon_points), avgofArrayy(polygon_points), 0);
+        // 6: Translate back to desired position
+        glTranslated(cur_translate.x, cur_translate.y, 0);
+        //glTranslated(avgofArrayx(polygon_points), avgofArrayy(polygon_points), 0);
 
         // 2: rotate around Z axis
         glRotatef(rotTheta, 0, 0, 1);
@@ -134,19 +136,20 @@ static void p1_display()
 // While idle, rotate
 static void p1_idle()
 {
-    rotTheta += 0.04 * rotMultiplier;
+    rotTheta += rotBase * rotMultiplier;
     if(rotTheta > 360.0)
         rotTheta -= 360.0;
 
     glutPostRedisplay();
 }
 
-void p1_passive(int x, int y)
+void p1_motion(int x, int y)
 {
     if (translate)
     {
-        cur_translate.x = abs(cur_translate.x - x);
-        cur_translate.y = abs(cur_translate.y - y);
+        std::cout << x << " " << y << std::endl;
+        cur_translate.x = abs(x);
+        cur_translate.y = abs(y);
     }
 }
 
@@ -163,7 +166,8 @@ static void p1_mouse(GLint button, GLint action, GLint x, GLint y)
                     if (polygon_points.size() > 2 && point_fuzz(x, y, polygon_points.at(0))) // We've completed the polygon
                     {
                         acquired_points = true;
-
+                        cur_translate.x = avgofArrayx(polygon_points);
+                        cur_translate.y = avgofArrayy(polygon_points);
                         glutIdleFunc(p1_idle);
                     }
                     else // Add this point and go again
@@ -187,6 +191,7 @@ static void p1_mouse(GLint button, GLint action, GLint x, GLint y)
                     }
                     else // Translate the object
                     {
+                        std::cout << "we in here" << std::endl;
                         translate = true;
                         scale = false;
                     }
@@ -241,5 +246,5 @@ void Part1::runPart1()
     glutReshapeFunc (p1_reshape);
     glutIdleFunc(nullptr);
     glutMouseFunc(p1_mouse);
-    glutPassiveMotionFunc(p1_passive);
+    glutMotionFunc(p1_motion);
 }
