@@ -34,7 +34,6 @@ static GLint rotMultiplier = 1;
 static GLfloat rotBase = 0.4;
 bool scale = false, translate = false;
 
-
 // Color
 static GLfloat red{ }, green{ }, blue{ };
 void party()
@@ -146,8 +145,8 @@ void p1_motion(int x, int y)
 {
     if (translate)
     {
-        cur_translate.x = abs(x);
-        cur_translate.y = abs(y);
+        cur_translate.x = x;
+        cur_translate.y = y;
     }
 
     if (scale)
@@ -176,7 +175,7 @@ static void p1_mouse(GLint button, GLint action, GLint x, GLint y)
                     }
                     else // Add this point and go again
                     {
-                        polygon_points.push_back(Vec2<GLint>(x, y));
+                        polygon_points.emplace_back(x, y);
                         glutPostRedisplay();
                     }
                 }
@@ -215,7 +214,7 @@ static void p1_mouse(GLint button, GLint action, GLint x, GLint y)
                 {
                     int p1wid = p1_window_id;
                     p1_window_id = -1;
-                    glutIdleFunc(NULL);
+                    glutIdleFunc(nullptr);
                     glutDestroyWindow(p1wid);
                 }
             }
