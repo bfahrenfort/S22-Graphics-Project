@@ -29,8 +29,9 @@ static int fuzz = 4;
 // Transformation utilities
 static std::vector<Vec2<GLint>> polygon_points{ };
 static Vec2<GLfloat> cur_translate(0, 0), cur_scale(1, 1);
-static GLfloat rotTheta[] = {0.0,0.0};
-static GLint rotate = 0;
+static GLfloat rotTheta = 0.0;
+static GLint rotMultiplier = 1;
+bool scale = false, translate = false;
 
 
 // Color
@@ -84,12 +85,21 @@ static void p1_display()
     if (acquired_points) // draw the polygon
     {
         glPushMatrix();
+
+        // 5: color
         glColor3f(red, green, blue);
-        glTranslated(avgofArrayx(polygon_points), avgofArrayy(polygon_points), 0);
-        glRotatef(rotTheta[0], 0, 0, -1);
-        glRotatef(rotTheta[1], 0, 0, 1);
-        glTranslated(-avgofArrayx(polygon_points), -avgofArrayy(polygon_points), 0);
+
+        // 4: scale
         glScalef(cur_scale.x, cur_scale.y, 1.0);
+
+        // 3: translate back to itself
+        glTranslated(avgofArrayx(polygon_points), avgofArrayy(polygon_points), 0);
+
+        // 2: rotate around Z axis
+        glRotatef(rotTheta, 0, 0, 1);
+
+        // 1: translate to origin
+        glTranslated(-avgofArrayx(polygon_points), -avgofArrayy(polygon_points), 0);
 
         glBegin(GL_POLYGON);
         for(Vec2<GLint> p : polygon_points)
@@ -124,11 +134,20 @@ static void p1_display()
 // While idle, rotate
 static void p1_idle()
 {
-    rotTheta[rotate] += 0.04;
-    if(rotTheta[rotate] > 360.0)
-        rotTheta[rotate] -= 360.0;
+    rotTheta += 0.04 * rotMultiplier;
+    if(rotTheta > 360.0)
+        rotTheta -= 360.0;
 
     glutPostRedisplay();
+}
+
+void p1_passive(int x, int y)
+{
+    if (translate)
+    {
+        cur_translate.x = abs(cur_translate.x - x);
+        cur_translate.y = abs(cur_translate.y - y);
+    }
 }
 
 // Handle mouse clicks
@@ -157,21 +176,26 @@ static void p1_mouse(GLint button, GLint action, GLint x, GLint y)
                 {
                     mods = glutGetModifiers();
 
-                    if (mods & GLUT_ACTIVE_SHIFT)
+                    if (mods & GLUT_ACTIVE_SHIFT) // Scale the object
                     {
-
+                        scale = true;
+                        translate = false;
                     }
-                    if (mods & GLUT_ACTIVE_CTRL)
-                    {
-
-                    }
-                    if (mods & GLUT_ACTIVE_ALT) {
-                        rotate = (rotate + 1) % 2;
+                    else if (mods & GLUT_ACTIVE_ALT) { // Swap rotation
+                        rotMultiplier *= -1;
                         party();
                     }
-
-                    //MouseX = x; MouseY = y;
+                    else // Translate the object
+                    {
+                        translate = true;
+                        scale = false;
+                    }
                 }
+            }
+            else if (action == GLUT_UP)
+            {
+                translate = false;
+                scale = false;
             }
             break;
         case GLUT_RIGHT_BUTTON: // Stop the program
@@ -217,4 +241,5 @@ void Part1::runPart1()
     glutReshapeFunc (p1_reshape);
     glutIdleFunc(nullptr);
     glutMouseFunc(p1_mouse);
+    glutPassiveMotionFunc(p1_passive);
 }
