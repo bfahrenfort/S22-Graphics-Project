@@ -195,7 +195,6 @@ static void p1_mouse(GLint button, GLint action, GLint x, GLint y)
                     }
                     else // Translate the object
                     {
-                        std::cout << "we in here" << std::endl;
                         translate = true;
                         scale = false;
                     }
