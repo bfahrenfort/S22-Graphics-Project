@@ -142,9 +142,6 @@ static void mouseFcn(GLint button, GLint action, GLint x, GLint y)
     }
 }
 
-
-
-
 static void winReshapeFcn(GLint newWidth, GLint newHeight)
 {
     p2_window_width = newWidth;
