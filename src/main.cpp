@@ -4,6 +4,7 @@
 
 #ifdef __APPLE__
 #define GL_SILENCE_DEPRECATION
+
     #include <GLUT/glut.h>
 #else
     #include <GL/glut.h>
@@ -43,3 +44,6 @@ int main(int argc, char **argv)
     glutMainLoop();
     return 0;
 }
+
+
+
