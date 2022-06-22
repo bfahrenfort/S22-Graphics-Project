@@ -20,6 +20,7 @@
     #include <GL/glu.h>
 #endif
 
+
 void initrand()
 {
     srand(time(nullptr)); // Yes, time is bad as a seed. This is for colors only.
